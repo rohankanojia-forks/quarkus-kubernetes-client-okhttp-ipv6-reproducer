@@ -13,9 +13,10 @@ class ListPodsTest {
     void listPodsTest() {
         // Given
         KubernetesClient client = new DefaultKubernetesClient();
+        ListPods l = new ListPods(client);
 
         // When
-        PodList podList = client.pods().inAnyNamespace().list();
+        PodList podList = l.list();
 
         // Then
         assertNotNull(podList);

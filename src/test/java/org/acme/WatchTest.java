@@ -19,9 +19,10 @@ class WatchTest {
         // Given
         KubernetesClient client = new DefaultKubernetesClient();
         CountDownLatch countDownLatch = new CountDownLatch(1);
+        WatchDemo w = new WatchDemo(client);
 
         // When
-        Watch watch = client.pods().inAnyNamespace().watch(new Watcher<Pod>() {
+        Watch watch = w.runWatch(new Watcher<>() {
             @Override
             public void eventReceived(Action action, Pod pod) {
                 System.out.println(action.name() + " " + pod.getMetadata().getNamespace() + "/" + pod.getMetadata().getName());
@@ -29,7 +30,8 @@ class WatchTest {
             }
 
             @Override
-            public void onClose(WatcherException e) { }
+            public void onClose(WatcherException e) {
+            }
         });
 
         // Then

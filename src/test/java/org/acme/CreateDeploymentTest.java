@@ -17,11 +17,10 @@ class CreateDeploymentTest {
     void testCreateDeployment() {
         // Given
         KubernetesClient client = new DefaultKubernetesClient();
+        CreateDeployment c = new CreateDeployment(client);
 
         // When
-        Deployment deployment = client.apps().deployments()
-                .inNamespace("default")
-                .create(createDeployment());
+        Deployment deployment = c.createDeployment();
 
         // Then
         assertNotNull(deployment);
@@ -32,25 +31,4 @@ class CreateDeploymentTest {
                 .delete());
     }
 
-    private Deployment createDeployment() {
-        return new DeploymentBuilder()
-                .withNewMetadata().withGenerateName("nginx-deployment").addToLabels("app", "nginx").endMetadata()
-                .withNewSpec()
-                .withReplicas(3)
-                .withNewSelector()
-                .withMatchLabels(Collections.singletonMap("app", "nginx"))
-                .endSelector()
-                .withNewTemplate()
-                .withNewMetadata().addToLabels("app", "nginx").endMetadata()
-                .withNewSpec()
-                .addNewContainer()
-                .withName("nginx")
-                .withImage("nginx:1.7.9")
-                .addNewPort().withContainerPort(80).endPort()
-                .endContainer()
-                .endSpec()
-                .endTemplate()
-                .endSpec()
-                .build();
-    }
 }

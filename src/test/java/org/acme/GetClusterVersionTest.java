@@ -13,9 +13,10 @@ class GetClusterVersionTest {
     void testClientConnectsInIpv6Cluster() {
         // Given
         KubernetesClient client = new DefaultKubernetesClient();
+        GetClusterVersion g = new GetClusterVersion(client);
 
         // When
-        VersionInfo versionInfo = client.getVersion();
+        VersionInfo versionInfo = g.versionInfo();
 
         // Then
         assertNotNull(versionInfo);
